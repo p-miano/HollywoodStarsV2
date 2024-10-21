@@ -1,0 +1,69 @@
+﻿@model HollywoodStars.WebUI.Models.CompanyMoviesViewModel
+
+@{
+    ViewData["Title"] = $"Manage {Model.Company.Name} Movies";
+}
+
+@if (Model.NonAssociatedMovies.Any())
+{
+    <form method="post" asp-action="Add">
+        <input type="hidden" name="companyId" value="@Model.Company.CompanyId" />
+        <select name="movieId" onchange="selectChange(this)">
+            <option>(Select a movie to associate)</option>
+            @foreach (var movie in Model.NonAssociatedMovies)
+            {
+                <option value="@movie.MovieId">
+                    @movie.Title
+                </option>
+            }
+        </select>
+        <button id="btnAdd" type="submit" class="btn btn-primary" disabled>Click here to Add</button>
+    </form>
+}
+else
+{
+    if (Model.AssociatedMovies.Any())
+    {
+        <p>This company is associated with all movies.</p> 
+    }
+}
+
+@if (Model.AssociatedMovies.Any())
+{
+    <table>
+        <tr>
+            <th>Company present in:</th>
+            <th></th>
+        </tr>
+        @foreach (var movie in Model.AssociatedMovies)
+        {
+            <tr>
+                <td>
+                    <input type="text" value="@movie.Title" style="width:350px;" class="form-control classname" readonly />
+                </td>
+                <td>
+                    <form method="post" asp-action="Remove">
+                        <input type="hidden" name="companyId" value="@Model.Company.CompanyId" />
+                        <input type="hidden" name="movieId" value="@movie.MovieId" />
+                        <input type="submit" value="Remove" class="btn btn-danger" onclick="return removeConfirmation();" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>This company is not associated with any movie.</p>
+}
+
+@section Scripts {
+    <script>
+        function selectChange(select) {
+            if (select.selectedIndex == 0)
+                document.getElementById("btnAdd").disabled = "disabled";
+            else
+                document.getElementById("btnAdd").disabled = "";
+        }
+    </script>
+}

@@ -1,0 +1,42 @@
+﻿@model HollywoodStars.Models.Company
+
+@{
+    if (string.IsNullOrEmpty((string)ViewContext.RouteData.Values["id"]!))
+    {
+        ViewData["Title"] = "Add Company";
+    }
+    else
+    {
+        ViewData["Title"] = "Update Company";
+    }
+}
+
+<form method="post" asp-action="AddOrUpdate">
+    <div class="row">
+        <div class="col-md-6">
+            <label asp-for="Name" class="control-label"></label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+            <input asp-for="Name" class="form-control" />
+
+            <label asp-for="Type" class="control-label"></label>
+            <span asp-validation-for="Type" class="text-danger"></span>
+            <input asp-for="Type" class="form-control" />
+
+            <a href="/ManageCompanies/" class="btn btn-outline-secondary vspace">Back</a>
+
+            @if (Model == null || Model.CompanyId == 0)
+            {
+                <input type="submit" value="Add" class="btn btn-primary vspace" />
+            }
+            else
+            {
+                <input type="hidden" name="CompanyId" value="@Model.CompanyId" />
+                <input type="submit" value="Update" class="btn btn-primary vspace" />
+            }
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

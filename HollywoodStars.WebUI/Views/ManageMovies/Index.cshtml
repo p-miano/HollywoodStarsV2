@@ -1,0 +1,46 @@
+﻿@model IEnumerable<HollywoodStars.Models.Movie>
+
+@{
+    ViewData["Title"] = "Manage Movies";
+}
+
+<p>
+    <a asp-action="AddOrUpdate" class="btn btn-primary">Click here to Add</a>
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MovieId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleaseYear)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.MovieId
+            </td>
+            <td>
+                @item.Title
+            </td>
+            <td>
+                @item.ReleaseYear
+            </td>
+            <td>
+                <a asp-action="AddOrUpdate" asp-route-id=@item.MovieId class="btn btn-outline-primary">Update</a>
+                <form method="post" asp-action="Remove">
+                    <input type="hidden" name="MovieId" value="@item.MovieId" />
+                    <input type="submit" value="Remove" class="btn btn-danger" onclick="return removeConfirmation();" />
+                </form>
+            </td>
+        </tr>
+    }
+</table>
